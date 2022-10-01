@@ -1,42 +1,22 @@
-import { useEffect, useState } from "react";
-
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// 🚨🚨🚨
+// React Router 설치할때. 아래 커맨드를 사용해주세요:
+// npm i react-router-dom@5.3.0
+// 🚨🚨🚨
+import Detail from "./routes/Detail";
+import Home from "./routes/Home";
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [moives, setMoives] = useState([]);
-  const getMovies = async () => {
-    const json = await (
-      await fetch(
-        "https://yts.mx/api/v2/list_movies.json?minimum_rating=9.0&sort_by=year"
-      )
-    ).json();
-    setMoives(json.data.movies);
-    setLoading(false);
-  };
-  useEffect(() => {
-    getMovies();
-  }, []);
-
   return (
-    <div>
-      {loading ? (
-        <h1>Loading...</h1>
-      ) : (
-        <div>
-          {moives.map((movie) => (
-            <div key={movie.key}>
-              <img src={movie.medium_cover_image} />
-              <h2>{movie.title}</h2>
-              <p>{movie.summary}</p>
-              <ul>
-                {movie.genres.map((g) => (
-                  <li key={g}>{g}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/movie/:id">
+          <Detail />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
